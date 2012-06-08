@@ -1,0 +1,45 @@
+<table class="totals">
+  <% order_mrp_total = @order.line_items.map{|i| i.price * i.quantity}.sum %>
+  <% if (order_mrp_total - @order.item_total).round(2) != 0 %>
+    <tr>
+      <td class="cel1 bold"><%= t(:mrp_total) %>: </td>
+      <td class="cel2 bold cell" align="right"><%= number_to_currency order_mrp_total %></td>
+    </tr>
+  <% if (@order.item_total - order_mrp_total).round(2) > 0 %>
+    <tr>
+      <td class="cel1 bold"><%= t(:discount_total) %>: </td>
+      <td class="cel2 cell" align="right"><%= number_to_currency(@order.item_total - order_mrp_total) %></td>
+    </tr>
+  <% end %>
+  <% end %>
+  <tr>
+    <td class="cel1 bold"><%= t(:item_total) %>: </td>
+    <td class="cel2 bold cell" align="right"><%= number_to_currency @order.item_total %></td>
+  </tr>
+  <% @order.adjustments.eligible.each do |adjustment| %>
+  <% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+  <% next if  (adjustment.amount == 0) %>
+  <tr>
+    <td class="cel1 bold"><%= adjustment.label %>: </td>
+    <td class="cel2 cell" align="right"><%= number_to_currency adjustment.amount %></td>
+  </tr>
+  <% end %>
+
+  <tr>
+    <td class="cel1 bold"><strong><%= t(:order_total) %>:</strong></td>
+    <td class="cel2 cell" align="right"><strong><span id='summary-order-total'><%= number_to_currency @order.total %></span></strong></td>
+  </tr>
+  <% if @order.price_adjustment_totals.present? %>
+  <tr>
+    <td class="cel1"></td>
+    <td class="cel2"></td>
+  </tr>
+  <% @order.price_adjustment_totals.keys.each do |key| %>
+  <% next unless @order.price_adjustment_totals[key] %>
+  <tr class="total">
+    <td class="cel1 bold"><%= key %>:</td>
+    <td class="cel2 cell" align="right"><%= number_to_currency @order.price_adjustment_totals[key] %></td>
+  </tr>
+  <% end %>
+  <% end %>
+</table>

@@ -1,0 +1,21 @@
+<table class="line_items" >
+  <colgroup>
+    <col/>
+    <col/>
+  </colgroup>
+  <tr>
+    <td class="sku bold"><%= I18n.t(:sku) unless @receipt %></td>
+    <td class="desc bold"><%= I18n.t(:item_description) %></td>
+    <td class="qty bold"><%= t(:qty) %> </td>
+  </tr>
+  <% @order.line_items.each do |item| %>
+    <tr>
+      <td class="cell"><%=item.variant.sku unless @receipt%></td>
+      <td class="cell">
+        <%= item.variant.product.fullname rescue item.variant.product.name %>
+        <%= " #{item.variant.options_text}" %>
+      </td>
+      <td class="cell qty"><%=item.quantity %></td>
+    </tr>
+  <% end %>
+</table>

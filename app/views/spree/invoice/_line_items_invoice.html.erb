@@ -1,0 +1,34 @@
+<table class="line_items" >
+  <colgroup>
+    <col/>
+    <col/>
+    <col class="price"/>
+    <col class="qty"/>
+    <col class="total"/>
+  </colgroup>
+  <tr>
+    <td class="sku bold"><%= t(:sku) unless @receipt %></td>
+    <td class="desc bold"><%= t(:item_description) %></td>
+    <td class="price bold"><%=t(:price) unless @receipt%></td>
+    <td class="qty bold"><%= t(:qty) %> </td>
+    <td class="total bold"><%= t(:total) %></td>
+  </tr>
+  <% @order.line_items.each do |item| %>
+    <tr>
+      <td class="cell"><%=item.variant.sku unless @receipt%></td>
+      <td class="cell"><%= item.variant.product.fullname rescue item.variant.product.name %></td>
+      <td class="cell price"><%=number_to_currency(item.price) unless @receipt%></td>
+      <td class="cell qty"><%=item.quantity %></td>
+      <td class="cell total"><%=number_to_currency(item.price * item.quantity) %></td>
+    </tr>
+    <% if item.respond_to? :discount and item.discount > 0 %>
+      <tr>
+        <td class="cell">&nbsp;</td>
+        <td class="cell">(<%= t(:discount) %>)</td>
+        <td class="cell price"><%=number_to_currency(-1 * item.discount) %></td>
+        <td class="cell qty">&nbsp;</td>
+        <td class="cell total"><%=number_to_currency(-1 * item.discount * item.quantity) %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

@@ -11,10 +11,6 @@ module SpreeHardCopy
       app.config.assets.precompile += [ "store/spree_hard_copy.css", "store/html-receipt.css" ]
     end
 
-    initializer "spree.spree_hard_copy.preferences", :after => "spree.environment" do |app|
-      Spree::HardCopy::Config = Spree::HardCopyConfiguration.new
-    end
-
     # use rspec for tests
     config.generators do |g|
       g.test_framework :rspec

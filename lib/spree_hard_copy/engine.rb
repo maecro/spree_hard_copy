@@ -9,7 +9,7 @@ module SpreeHardCopy
 
     # Precompile assets
     initializer "spree_hard_copy.assets.precompile", :after => "spree.assets.precompile" do |app|
-      app.config.assets.precompile += [ "store/spree_hard_copy.css", "store/html-receipt.css" ]
+      app.config.assets.precompile += [ "store/spree_hard_copy.css", "store/html-receipt.css", "store/html-invoice.css" ]
     end
 
     # Load the configuration file

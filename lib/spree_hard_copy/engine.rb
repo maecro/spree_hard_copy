@@ -7,8 +7,14 @@ module SpreeHardCopy
 
     config.autoload_paths += %W(#{config.root}/lib)
 
+    # Precompile assets
     initializer "spree_hard_copy.assets.precompile", :after => "spree.assets.precompile" do |app|
       app.config.assets.precompile += [ "store/spree_hard_copy.css", "store/html-receipt.css" ]
+    end
+
+    # Load the configuration file
+    initializer "spree.spree_hard_copy.preferences", :after => "spree.environment" do |app|
+      Spree::HardCopy::Config = Spree::HardCopyConfiguration.new
     end
 
     # use rspec for tests
